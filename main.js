@@ -148,7 +148,7 @@ const combatLog = {
             if (source.name === "player") {
                 source.attacks.forEach((attack) => {
                     content.innerHTML += `<tr>
-                        <td data-border="true">${attack.name}</td>
+                        <td data-border="true" style="overflow:hidden; white-space:nowrap;">${attack.name}</td>
                         <td class="centerText" data-border="true">${numberWithCommas(attack.amount)}</td>
                         <td data-border="true">
                             <div class="progressBarContainer" data-theme="dark">
