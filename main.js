@@ -163,6 +163,7 @@ const combatLog = {
 
             document.getElementById("damageDone").innerHTML = numberWithCommas(source.damageDone);
             document.getElementById("dps").innerHTML = numberWithCommas(Math.round(source.dps));
+            document.getElementById("duration").innerHTML = Math.round(this.duration / 1000).toString();
         });
     }
 }
