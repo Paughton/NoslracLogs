@@ -231,6 +231,13 @@ const combatLog = {
                             fontColor: "rgb(255,255,255)"
                         }
                     },
+                    tooltips: {
+                        callbacks: {
+                            label: function(tooltipItem, data) {
+                                return numberWithCommas(tooltipItem.value);
+                            }
+                        }
+                    },
                     scales: {
                         xAxes: [{
                             scaleLabel: {
@@ -239,14 +246,19 @@ const combatLog = {
                             },
                             ticks: {
                                 autoSkip: true,
-                                maxTicksLimit: 10
+                                maxTicksLimit: 10,
                             }
                         }],
-
                         yAxes: [{
                             scaleLabel: {
                                 display: true,
                                 labelString: "Damage Dealt"
+                            },
+                            ticks: {
+                                beginAtZero:true,
+                                userCallback: function(value, index, values) {
+                                    return numberWithCommas(value);
+                                }
                             }
                         }]
                     }
