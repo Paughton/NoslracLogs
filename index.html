@@ -4,6 +4,9 @@
         <title>Noslrac Logs</title>
         <link rel="stylesheet" type="text/css" href="styles/framework.css">
         <link rel="stylesheet" type="text/css" href="styles/main.css">
+
+        <!-- Chart.js -->
+        <script src="js/chart.js"></script>
     </head>
 
     <body data-theme="dark">
@@ -21,6 +24,8 @@
                     DPS: <span id="dps">0</span><br>
                     Fight Duration: <span id="duration">0</span> seconds
                 </p>
+                <canvas id="damageBreakdownChart" style="width: 100%;"></canvas>
+                <div class="spacer" data-size="small"></div>
                 <table data-theme="dark" data-length="full" class="fontVerdana">
                     <thead>
                         <tr>
@@ -34,6 +39,8 @@
                 </table>
             </div>
         </div>
+
+        <div class="spacer" data-size="large"></div>
 
         <script src="js/main.js" type="module"></script>
     </body>

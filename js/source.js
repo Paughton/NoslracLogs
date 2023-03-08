@@ -1,4 +1,8 @@
 class Source {
+    /**
+     * Creates a source
+     * @param {string} name
+     */
     constructor(name) {
         this.name = name;
         this.events = [];
@@ -7,6 +11,10 @@ class Source {
         this.dps = 0;
     }
 
+    /**
+     * Adds an event to this source's events
+     * @param {Object} event
+     */
     addEvent(event) {
         this.events.push(event);
     }

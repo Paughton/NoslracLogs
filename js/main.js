@@ -29,6 +29,16 @@ const combatLog = {
 
     // Display
     selectedSource: "player",
+    chartBackgroundColors: [
+        "rgba(210,16,16,0.75)",
+        "rgba(16,187,210,0.75)",
+        "rgba(255,242,0,0.75)",
+        "rgba(174,16,210,0.75)",
+        "rgba(35,210,16,0.75)",
+        "rgba(16,210,152,0.75)",
+        "rgba(255,165,0,0.75)",
+        "rgba(132,16,210,0.75)",
+    ],
 
     /**
      * Loads the combat log's body text into it's corresponding variable
@@ -130,6 +140,11 @@ const combatLog = {
     update: function() {
         let content = document.getElementById("combatLogContent");
 
+        let xValues = [];
+        let yValues = [];
+        let datasets = [];
+        let datasetsIndex = 0;
+
         this.sources.forEach((source) => {
             if (source.name === this.selectedSource) {
                 source.abilityBreakdown.forEach((ability) => {
@@ -143,13 +158,100 @@ const combatLog = {
                             </div>
                         </td>
                         <td class="centerText" data-border="true">${ability.hits}</td>
-                    </tr>`
+                    </tr>`;
+
+                    datasets.push({
+                        label: ability.name,
+                        backgroundColor: this.chartBackgroundColors[datasetsIndex],
+                        borderColor: "rgba(0,255,255,0.5)",
+                        hidden: true,
+                        data: []
+                    });
+                    datasetsIndex++;
                 });
+
+                // Add events to the x and y values for the graph
+                source.events.forEach((event) => {
+                   if (event.type === "attack") {
+                       let index = xValues.indexOf(Math.round((event.timestamp - this.startTime) / 1000));
+                       let dataset = datasets.find(x => x.label === event.abilityName)
+
+                       if (index === -1) {
+                           xValues.push(Math.round((event.timestamp - this.startTime) / 1000));
+                           yValues.push(event.damageDone);
+                           index = xValues.length - 1;
+                       } else yValues[index] += event.damageDone;
+
+                       if (dataset.data[index] === undefined) dataset.data[index] = event.damageDone;
+                       else dataset.data[index] += event.damageDone;
+                   }
+                });
+
+                document.getElementById("damageDone").innerHTML = numberWithCommas(source.damageDone);
+                document.getElementById("dps").innerHTML = numberWithCommas(Math.round(source.dps));
             }
 
-            document.getElementById("damageDone").innerHTML = numberWithCommas(source.damageDone);
-            document.getElementById("dps").innerHTML = numberWithCommas(Math.round(source.dps));
+            // Update the duration
             document.getElementById("duration").innerHTML = Math.round(this.duration / 1000).toString();
+
+            // Fix the holes in the data
+            datasets.forEach((dataset) => {
+                for (let i = 0; i < (this.endTime - this.startTime) / 1000; i++) {
+                    if (dataset.data[i] === undefined) dataset.data[i] = 0;
+                }
+            });
+
+            // Add the total damage done
+            datasets.push({
+                label: "Total Damage Done",
+                backgroundColor: this.chartBackgroundColors[datasetsIndex],
+                borderColor: "rgba(0,255,255,0.5)",
+                data: yValues
+            });
+
+            console.log(datasets);
+
+            // Create the graph
+            // Documentation: https://www.chartjs.org/docs/2.9.4/
+            new Chart("damageBreakdownChart", {
+                type: "line",
+                data: {
+                    labels: xValues,
+                    datasets: datasets
+                },
+                options: {
+                    title: {
+                        display: true,
+                        text: "Damage Down Breakdown",
+                        fontColor: "rgb(255,255,255)"
+                    },
+                    legend: {
+                        display: true,
+                        labels: {
+                            fontColor: "rgb(255,255,255)"
+                        }
+                    },
+                    scales: {
+                        xAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: "Time (seconds)"
+                            },
+                            ticks: {
+                                autoSkip: true,
+                                maxTicksLimit: 10
+                            }
+                        }],
+
+                        yAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: "Damage Dealt"
+                            }
+                        }]
+                    }
+                }
+            });
         });
     }
 }
