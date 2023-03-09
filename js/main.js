@@ -308,3 +308,13 @@ document.getElementById("snippetButton").addEventListener("click", function(even
     // Update the combat log
     combatLog.calculate();
 });
+
+// When the reset button is pressed
+document.getElementById("resetButton").addEventListener("click", function(event) {
+    // Set the start times and end times
+    combatLog.startTime = combatLog.baseStartTime;
+    combatLog.endTime = combatLog.baseEndTime;
+
+    // Update the combat log
+    combatLog.calculate();
+});
