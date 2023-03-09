@@ -10,7 +10,17 @@ import EventTemplates from "./eventtemplates.js";
  * @returns {string}
  */
 function numberWithCommas(number) {
-    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    return Math.round(number).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
+/**
+ * Parses the string into a number (if applicable)
+ * @param {string} str
+ * @returns {string|number}
+ */
+function customParseInt(str) {
+    const parsed = +str;
+    return str.trim()==="" ? str : isNaN(parsed) ? str : parsed;
 }
 
 // The main object
@@ -23,6 +33,9 @@ const combatLog = {
     sources: [],
 
     // Stuff regarding the fight length
+    baseStartTime: -1,
+    baseEndTime: -1,
+    baseDuration: 0,
     startTime: -1,
     endTime: -1,
     duration: 0,
@@ -38,6 +51,12 @@ const combatLog = {
         "rgba(16,210,152,0.75)",
         "rgba(255,165,0,0.75)",
         "rgba(132,16,210,0.75)",
+        "rgba(210,16,126,0.75)",
+        "rgba(16,210,142,0.75)",
+        "rgba(87,16,210,0.75)",
+        "rgba(16,142,210,0.75)",
+        "rgba(16,210,123,0.75)",
+        "rgba(210,16,84,0.75)",
     ],
 
     /**
@@ -73,8 +92,8 @@ const combatLog = {
             let data = temp[1].split(",")
 
             // Set up the startTime and endTime
-            if (timestamp < this.startTime || this.startTime === -1) this.startTime = timestamp;
-            if (timestamp > this.endTime || this.endTime === -1) this.endTime = timestamp;
+            if (timestamp < this.baseStartTime || this.baseStartTime === -1) this.baseStartTime = timestamp;
+            if (timestamp > this.baseEndTime || this.baseEndTime === -1) this.baseEndTime = timestamp;
 
             // Create the boilerplate event
             let event = {
@@ -84,14 +103,8 @@ const combatLog = {
 
             // Create the event based on the indexes provided in the event template
             Object.keys(EventTemplates[event.type]).forEach((key) => {
-                // Get the value of the index provided in the event template
-                let value = data[EventTemplates[event.type][key]];
-
-                // If the value only contains numbers then convert the string into an integer
-                if (/^\d+$/.test(value)) value = parseInt(value);
-
                 // Assign the variable
-                event[key] = value;
+                event[key] = customParseInt(data[EventTemplates[event.type][key]]);
             });
 
             // Add this event to the events array
@@ -115,7 +128,9 @@ const combatLog = {
         });
 
         // Set this combat log's duration
-        this.duration = this.endTime - this.startTime;
+        this.startTime = this.baseStartTime;
+        this.endTime = this.baseEndTime;
+        this.baseDuration = this.baseEndTime - this.baseStartTime;
 
         // Calculate
         this.calculate();
@@ -125,6 +140,9 @@ const combatLog = {
      * Calculate the DPS and damage done for each source
      */
     calculate: function() {
+        // Update the duration
+        this.duration = this.endTime - this.startTime;
+
         this.sources.forEach((source) => {
             // Calculate the DPS of this source for the entire fight
             source.calculateDPS(this.startTime, this.endTime);
@@ -139,6 +157,7 @@ const combatLog = {
      */
     update: function() {
         let content = document.getElementById("combatLogContent");
+        content.innerHTML = ``;
 
         let xValues = [];
         let yValues = [];
@@ -172,7 +191,7 @@ const combatLog = {
 
                 // Add events to the x and y values for the graph
                 source.events.forEach((event) => {
-                   if (event.type === "attack") {
+                   if (event.type === "attack" && event.timestamp >= this.startTime && event.timestamp <= this.endTime) {
                        let index = xValues.indexOf(Math.round((event.timestamp - this.startTime) / 1000));
                        let dataset = datasets.find(x => x.label === event.abilityName)
 
@@ -192,7 +211,9 @@ const combatLog = {
             }
 
             // Update the duration
-            document.getElementById("duration").innerHTML = Math.round(this.duration / 1000).toString();
+            if (this.duration !== this.baseDuration) document.getElementById("duration").innerHTML = `${Math.round(this.duration / 1000).toString()} (out of ${Math.round(this.baseDuration / 1000)})`;
+            else document.getElementById("duration").innerHTML = Math.round(this.duration / 1000).toString();
+
 
             // Fix the holes in the data
             datasets.forEach((dataset) => {
@@ -209,10 +230,10 @@ const combatLog = {
                 data: yValues
             });
 
-            console.log(datasets);
-
             // Create the graph
             // Documentation: https://www.chartjs.org/docs/2.9.4/
+            document.getElementById("damageBreakdownChart").remove();
+            document.getElementById("chartContainer").innerHTML = `<canvas id="damageBreakdownChart"></canvas>`;
             new Chart("damageBreakdownChart", {
                 type: "line",
                 data: {
@@ -270,3 +291,20 @@ const combatLog = {
 
 // Initialize the combat log
 combatLog.initialize();
+
+// When the snippet button is pressed
+document.getElementById("snippetButton").addEventListener("click", function(event) {
+    // Set the start times and end times
+    combatLog.startTime = parseInt(document.getElementById("startTime").value) * 1000 + combatLog.baseStartTime;
+    combatLog.endTime = parseInt(document.getElementById("endTime").value) * 1000 + combatLog.baseStartTime;
+
+    // Make sure the snippet end time does not extend past the base end time
+    if (combatLog.endTime > combatLog.baseEndTime) combatLog.endTime = combatLog.baseEndTime;
+
+    // Reset the DOM elements
+    document.getElementById("startTime").value = "";
+    document.getElementById("endTime").value = "";
+
+    // Update the combat log
+    combatLog.calculate();
+});

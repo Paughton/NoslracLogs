@@ -24,8 +24,19 @@
                     DPS: <span id="dps">0</span><br>
                     Fight Duration: <span id="duration">0</span> seconds
                 </p>
-                <canvas id="damageBreakdownChart" style="width: 100%;"></canvas>
-                <div class="spacer" data-size="small"></div>
+
+                <div id="chartContainer">
+                    <canvas id="damageBreakdownChart"></canvas>
+                </div>
+
+                <div class="spacer" data-size="medium"></div>
+
+                <input type="text" placeholder="Start time (in seconds)" id="startTime" data-theme="dark" />
+                <input type="text" placeholder="End time (in seconds)" id="endTime" data-theme="dark" />
+                <button data-color="orange" data-theme="dark" id="snippetButton">Snippet</button>
+
+                <div class="spacer" data-size="medium"></div>
+
                 <table data-theme="dark" data-length="full" class="fontVerdana">
                     <thead>
                         <tr>
