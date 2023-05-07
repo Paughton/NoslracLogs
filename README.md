@@ -1,5 +1,5 @@
 # Noslrac Logs
-Noslrac Logs is a simple Noslrac combat logs reader and simple display for information gathered from such combat logs. The purpose of Noslrac Logs is to be a lightweight logs reader whilst showing about the same necessary data. This application has been inspired by [https://www.warcraftlogs.com/](Warcraft Logs) for the MMORPG: World of Warcraft.
+Noslrac Logs is a simple Noslrac combat logs reader and simple display for information gathered from such combat logs. The purpose of Noslrac Logs is to be a lightweight logs reader whilst showing about the same necessary data. This application has been inspired by [Warcraft Logs](https://www.warcraftlogs.com/) for the MMORPG: World of Warcraft.
 
 Noslrac is a casual dungeon crawler ARPG with 4 unique classes with differing playstyles. Choose your conqueror, level up, slay monsters, complete campaigns, conqueror the darkest dungeons, obtain powerful items, and craft the ultimate items to cleanse Banglesway of corruption.
 
