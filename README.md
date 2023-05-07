@@ -3,7 +3,7 @@ Noslrac Logs is a simple Noslrac combat logs reader and simple display for infor
 
 Noslrac is a casual dungeon crawler ARPG with 4 unique classes with differing playstyles. Choose your conqueror, level up, slay monsters, complete campaigns, conqueror the darkest dungeons, obtain powerful items, and craft the ultimate items to cleanse Banglesway of corruption.
 
-**Please Note**: Noslrac is developed by Silas Carlson and this repository is also mannaged by Silas Carlson. Therefore you can find all event formats in the [./js/eventtemplates.js](eventtemplates.js) file, and expect it to  be up to date if you desire to make your own custom logs reader. Please be aware that this site will not be hosted anywhere, this is for personal use.
+**Please Note**: Noslrac is developed by Silas Carlson and this repository is also managed by Silas Carlson. Therefore, you can find all event formats in the [eventtemplates.js](./js/eventtemplates.js) file, and expect it to  be up to date if you desire to make your own custom logs reader. Please be aware that this site will not be hosted anywhere, this is for personal use.
 
 [![Steam](https://img.shields.io/badge/Steam-000000?style=for-the-badge&logo=steam&logoColor=white)](https://store.steampowered.com/app/2184030/Noslrac/)
 
