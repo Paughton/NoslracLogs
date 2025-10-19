@@ -1,59 +1,13 @@
-<!DOCTYPE HTML>
-<HTML lang="en">
-    <head>
-        <title>Noslrac Logs</title>
-        <link rel="stylesheet" type="text/css" href="styles/framework.css">
-        <link rel="stylesheet" type="text/css" href="styles/main.css">
-
-        <!-- Chart.js -->
-        <script src="js/chart.js"></script>
-    </head>
-
-    <body data-theme="dark">
-        <div class="jumbotron" data-theme="dark">
-            <div class="content">
-                <h1 class="fontTrebuchet">Noslrac Logs</h1>
-            </div>
-        </div>
-
-        <div class="contentContainer" data-theme="dark">
-            <div class="content">
-                <h2 class="fontTrebuchet">Your damage breakdown:</h2>
-                <p class="fontVerdana">
-                    Total Damage Done: <span id="damageDone">0</span><br>
-                    DPS: <span id="dps">0</span><br>
-                    Fight Duration: <span id="duration">0</span> seconds
-                </p>
-
-                <div id="chartContainer">
-                    <canvas id="damageBreakdownChart"></canvas>
-                </div>
-
-                <div class="spacer" data-size="medium"></div>
-
-                <input type="text" placeholder="Start time (in seconds)" id="startTime" data-theme="dark" />
-                <input type="text" placeholder="End time (in seconds)" id="endTime" data-theme="dark" />
-                <button data-color="orange" data-theme="dark" id="snippetButton">Snippet</button>
-                <button data-color="red" data-theme="dark" id="resetButton">Reset</button>
-
-                <div class="spacer" data-size="medium"></div>
-
-                <table data-theme="dark" data-length="full" class="fontVerdana">
-                    <thead>
-                        <tr>
-                            <th scope="col" data-border="true" data-length="medium">Ability Name</th>
-                            <th scope="col" data-border="true" data-length="small">Damage</th>
-                            <th scope="col" data-border="true">DPS</th>
-                            <th scope="col" data-border="true" data-length="tiny">Hits</th>
-                        </tr>
-                    </thead>
-                    <tbody id="combatLogContent"></tbody>
-                </table>
-            </div>
-        </div>
-
-        <div class="spacer" data-size="large"></div>
-
-        <script src="js/main.js" type="module"></script>
-    </body>
-</HTML>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Noslrac Logs</title>
+  </head>
+  <body data-theme="dark">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
