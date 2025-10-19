@@ -2,6 +2,8 @@ import type { Sanctus } from "../sanctus/Sanctus";
 import type { Entity } from "../sanctus/Entity";
 import type { JSX } from "react";
 import type { Source } from "../sanctus/Source";
+import type { CombatEvent } from "../sanctus/CombatEvent";
+import { DamageProfile } from "./DamageProfile";
 
 function DamageTableRow({ entity, source }: { entity: Entity, source: Source }): JSX.Element {
     return (
@@ -14,9 +16,9 @@ function DamageTableRow({ entity, source }: { entity: Entity, source: Source }):
                     <div className="textContainer textShadowDark">{ source.getDamagePerSecond().toLocaleString() } ({Math.round(source.getDamagePerSecond() / entity.getDamagePerSecond() * 100)}%)</div>
                 </div>
             </td>
-            <td className="centerText" data-border="true">{source.getCombatEventsWithType("ABILITY_CAST").filter((event: Event) => !event.getProperty("castBySkill")).length}</td>
+            <td className="centerText" data-border="true">{source.getCombatEventsWithType("ABILITY_CAST").filter((combatEvent: CombatEvent) => !combatEvent.getProperty("castBySkill")).length}</td>
             <td className="centerText" data-border="true">{source.getCombatEventsWithType("ATTACK").length}</td>
-            <td className="centerText" data-border="true">{source.getCombatEventsWithType("ATTACK").filter((event: Event) => event.getProperty("isCrushing")).length}</td>
+            <td className="centerText" data-border="true">{source.getCombatEventsWithType("ATTACK").filter((combatEvent: CombatEvent) => combatEvent.getProperty("isCrushing")).length}</td>
         </tr>
     );
 }
@@ -28,6 +30,7 @@ function Profile({entity}: { entity: Entity }) {
             <br />
             <p>DPS: {entity.getDamagePerSecond().toLocaleString()}</p>
             <p>Total Damage Done: {entity.getDamageDone().toLocaleString()}</p>
+            <DamageProfile sources={entity.getSources()} />
             <table data-theme="dark" data-length="full" className="fontVerdana">
                 <thead>
                 <tr>

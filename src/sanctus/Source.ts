@@ -1,10 +1,12 @@
-import type {CombatEvent} from "./CombatEvent.ts";
+import type { CombatEvent } from "./CombatEvent";
 
 export class Source {
     private readonly combatEvents: CombatEvent[] = [];
     private readonly name: string;
     private damagePerSecond: number = 0;
     private damageDone: number = 0;
+    private startTime: number = 0;
+    private endTime: number = 0;
 
     constructor(name: string) {
         this.name = name;
@@ -21,6 +23,18 @@ export class Source {
 
     public getDamageDone(): number {
         return this.damageDone;
+    }
+
+    public getStartTime(): number {
+        return this.startTime;
+    }
+
+    public getEndTime(): number {
+        return this.endTime;
+    }
+
+    public getCombatEventsWithinTimestamp(startTime: number, endTime: number, type: string): CombatEvent[] {
+        return this.combatEvents.filter((combatEvent: CombatEvent) => combatEvent.getTimestamp() >= startTime && combatEvent.getTimestamp() <= endTime && combatEvent.getType() == type);
     }
 
     public getCombatEventsWithType(type: string): CombatEvent[] {
@@ -49,5 +63,10 @@ export class Source {
 
     public pushCombatEvent(combatEvent: CombatEvent): void {
         this.combatEvents.push(combatEvent);
+
+        // Timestamps
+        // TEMP
+        if (this.startTime === 0 || combatEvent.getTimestamp() < this.startTime) this.startTime = combatEvent.getTimestamp();
+        if (combatEvent.getTimestamp() > this.endTime) this.endTime = combatEvent.getTimestamp();
     }
 }

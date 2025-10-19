@@ -1,5 +1,5 @@
-import {Entity} from "./Entity.ts";
-import {CombatEvent} from "./CombatEvent.ts";
+import { Entity } from "./Entity";
+import { CombatEvent } from "./CombatEvent";
 
 export class Sanctus {
     private readonly entities: Entity[] = [];

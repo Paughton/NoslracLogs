@@ -1,0 +1,11 @@
+.damageGraphTooltip {
+    border: #777777 10px solid;
+    background-color: #575757FF;
+    font-size: 12px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.damageGraphTooltip p {
+    margin: 0;
+    padding: 0;
+}
