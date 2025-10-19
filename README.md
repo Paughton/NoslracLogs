@@ -9,10 +9,11 @@ Noslrac is a casual dungeon crawler ARPG with 4 unique classes with differing pl
 - Display the DPS of the player over the duration of combat
 - Get amount of hits an ability did
 
-**Programming Languages Used**
-- HTML
+**Technologies Used**
+- TypeScript
+- React
+- Recharts
 - CSS
-- Typescript
 
 ## Contributing
 We allow all contributions to be made. Please make sure to open up a merge request in order to contribute.
